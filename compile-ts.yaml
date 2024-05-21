@@ -1,0 +1,22 @@
+name: Compile TS
+on: [push]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetching Repository Contents
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+      - run: |
+          cd backend 
+          npm i
+          npm run build
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+          git add dist
+          git commit -m "Build backend"
+          git push origin main
